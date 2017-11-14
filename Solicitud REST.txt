@@ -1,0 +1,102 @@
+POST https://www.googleapis.com/compute/v1/projects/ejemplogcpud/zones/southamerica-east1-b/instances
+{
+  "name": "maquinagcpud",
+  "zone": "projects/ejemplogcpud/zones/southamerica-east1-b",
+  "minCpuPlatform": "Automatic",
+  "machineType": "projects/ejemplogcpud/zones/southamerica-east1-b/machineTypes/n1-standard-2",
+  "metadata": {
+    "items": []
+  },
+  "tags": {
+    "items": [
+      "http-server",
+      "https-server"
+    ]
+  },
+  "disks": [
+    {
+      "type": "PERSISTENT",
+      "boot": true,
+      "mode": "READ_WRITE",
+      "autoDelete": true,
+      "deviceName": "maquinagcpud",
+      "initializeParams": {
+        "sourceImage": "projects/windows-cloud/global/images/windows-server-2012-r2-dc-v20171010",
+        "diskType": "projects/ejemplogcpud/zones/southamerica-east1-b/diskTypes/pd-standard",
+        "diskSizeGb": "50"
+      }
+    }
+  ],
+  "canIpForward": false,
+  "networkInterfaces": [
+    {
+      "network": "projects/ejemplogcpud/global/networks/default",
+      "subnetwork": "projects/ejemplogcpud/regions/southamerica-east1/subnetworks/default",
+      "accessConfigs": [
+        {
+          "name": "External NAT",
+          "type": "ONE_TO_ONE_NAT"
+        }
+      ],
+      "aliasIpRanges": []
+    }
+  ],
+  "description": "",
+  "labels": {},
+  "scheduling": {
+    "preemptible": false,
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true
+  },
+  "serviceAccounts": [
+    {
+      "email": "ejemplogcpud@appspot.gserviceaccount.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ]
+    }
+  ]
+}
+
+POST https://www.googleapis.com/compute/v1/projects/ejemplogcpud/global/firewalls
+{
+  "name": "default-allow-http",
+  "kind": "compute#firewall",
+  "sourceRanges": [
+    "0.0.0.0/0"
+  ],
+  "targetTags": [
+    "http-server"
+  ],
+  "allowed": [
+    {
+      "IPProtocol": "tcp",
+      "ports": [
+        "80"
+      ]
+    }
+  ],
+  "network": "projects/ejemplogcpud/global/networks/default"
+}
+
+POST https://www.googleapis.com/compute/v1/projects/ejemplogcpud/global/firewalls
+{
+  "name": "default-allow-https",
+  "kind": "compute#firewall",
+  "sourceRanges": [
+    "0.0.0.0/0"
+  ],
+  "targetTags": [
+    "https-server"
+  ],
+  "allowed": [
+    {
+      "IPProtocol": "tcp",
+      "ports": [
+        "443"
+      ]
+    }
+  ],
+  "network": "projects/ejemplogcpud/global/networks/default"
+}
+

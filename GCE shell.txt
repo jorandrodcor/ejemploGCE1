@@ -1,0 +1,6 @@
+---------------------LINEA DE COMANDOS--------------------------------
+gcloud beta compute --project "ejemplogcpud" instances create "maquinagcpud" --zone "southamerica-east1-b" --machine-type "n1-standard-2" --subnet "default" --maintenance-policy "MIGRATE" --service-account "ejemplogcpud@appspot.gserviceaccount.com" --scopes "https://www.googleapis.com/auth/cloud-platform" --min-cpu-platform "Automatic" --tags "http-server","https-server" --image "windows-server-2012-r2-dc-v20171010" --image-project "windows-cloud" --boot-disk-size "50" --boot-disk-type "pd-standard" --boot-disk-device-name "maquinagcpud"
+
+gcloud compute --project=ejemplogcpud firewall-rules create default-allow-http --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+gcloud compute --project=ejemplogcpud firewall-rules create default-allow-https --network=default --action=ALLOW --rules=tcp:443 --source-ranges=0.0.0.0/0 --target-tags=https-server
